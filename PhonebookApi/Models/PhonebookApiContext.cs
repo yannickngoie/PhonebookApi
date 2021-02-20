@@ -15,7 +15,6 @@ namespace PhonebookApi.Models
 
         public DbSet<PhoneBook> PhoneBooks { get; set; }
         public DbSet<Entry> Entries { get; set; }
-        public DbSet<TodoItem> TodoItems { get; set; }
 
     }
 }

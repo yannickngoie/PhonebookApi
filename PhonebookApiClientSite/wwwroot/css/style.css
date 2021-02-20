@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.phone--book {
+    padding: 50px;
+}
+
+.phone--book-header h1 {
+    text-align: center;
+    color: #001f3f;
+    margin: 20px 0;
+    font-size: 2rem;
+}
+
+.phone--book-header {
+    margin-bottom: 30px;
+}
+
+.phone--book-top {
+}
+
+.form-control {
+    padding: 30px;
+    text-align: center;
+    border: none;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #000;
+    outline: none;
+}
+
+button {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 8px 15px;
+    background: #001f3f;
+    text-align: center;
+    transition: 0.5s;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+    button:focus {
+        outline: none;
+    }
+
+    button:hover {
+        color: #001f3f;
+        background: #fff;
+        transform: 1.5;
+        box-shadow: 0 0 0 2px #001f3f;
+    }
+
+.phone--book-middle {
+    padding: 30px;
+    display: none;
+}
+
+#pb-cancel {
+    display: none;
+}
+
+.phone--book-top,
+.phone--book-middle,
+.phone--book-bottom {
+    margin: 10px;
+}
+
+.pb-all {
+    padding: 30px;
+    border: 1px solid #bfbcbc;
+}

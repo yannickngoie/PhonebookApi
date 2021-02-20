@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PhonebookApi.Models;
 using PhonebookApi.Services;
+using Microsoft.Net.Http.Headers;
 
 namespace PhonebookApi
 {
@@ -29,12 +30,20 @@ namespace PhonebookApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<TodoContext>(opt =>
-                                              //opt.UseSqlServer("TodoList"));
-            services.AddDbContext<PhonebookApiContext>(opt =>
-            opt.UseInMemoryDatabase("PhonebookApiDatabase"));
+            services.AddDbContext<PhonebookApiContext>(item => item.UseSqlServer(Configuration.GetConnectionString("PhonebookApiContextConnection")));
+            services.AddDbContext<CustomerContext>(item => item.UseSqlServer(Configuration.GetConnectionString("CustomerContext")));
             services.AddScoped<IPhoneBookService, PhoneBookService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "MyPolicy",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
 
+                    });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -51,6 +60,8 @@ namespace PhonebookApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PhonebookApi v1"));
+                app.UseCors(options => options.AllowAnyOrigin()
+             .WithHeaders(HeaderNames.ContentType));
             }
 
             app.UseHttpsRedirection();
@@ -63,6 +74,8 @@ namespace PhonebookApi
             {
                 endpoints.MapControllers();
             });
+           
+
         }
     }
 }
