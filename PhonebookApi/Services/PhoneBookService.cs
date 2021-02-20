@@ -11,22 +11,32 @@ namespace PhonebookApi.Services
     public class PhoneBookService:IPhoneBookService
     {
 
-        private List<IEnumerable> _phoneBooks;
+ 
         private readonly PhonebookApiContext _context;
         public PhoneBookService(PhonebookApiContext context)
         {
-            _phoneBooks = new List<IEnumerable>();
+
             _context = context;
         }
-       public PhoneBook AddPhoneBook (PhoneBook phoneBook)
-       {
-            _context.PhoneBooks.Add(phoneBook);
-            return phoneBook;
-       }
 
-        IEnumerable <PhoneBook> IPhoneBookService.GetAllPhoneBooks()
+        public async Task<PhoneBook> AddPhoneBook(PhoneBook phoneBook)
         {
-            return _context.PhoneBooks.ToList();
+            _context.PhoneBooks.Add(phoneBook);
+            await _context.SaveChangesAsync();
+            var result = phoneBook;
+            
+            return result;
+        }
+
+        public async Task<List<PhoneBook>> GetAllPhoneBooks()
+        {
+            return await _context.PhoneBooks.ToListAsync();
+        }
+
+        public async Task<PhoneBook> GetPhoneBook(long id)
+        {
+            return await _context.PhoneBooks.FindAsync(id);
+          
         }
     }
 }

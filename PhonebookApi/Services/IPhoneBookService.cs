@@ -8,7 +8,8 @@ namespace PhonebookApi.Services
 {
    public interface IPhoneBookService
     {
-        public as Task List<PhoneBook>GetAllPhoneBooks();
-        public PhoneBook AddPhoneBook(PhoneBook phoneBook);
+        Task<List<PhoneBook>> GetAllPhoneBooks();
+        Task <PhoneBook> AddPhoneBook(PhoneBook phoneBook);
+        Task<PhoneBook> GetPhoneBook(long id);
     }
 }

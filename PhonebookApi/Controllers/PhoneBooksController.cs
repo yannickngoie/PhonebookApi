@@ -15,25 +15,26 @@ namespace PhonebookApi.Controllers
     public class PhoneBooksController : ControllerBase
     {
         private readonly PhonebookApiContext _context;
-       // private readonly PhoneBookService _service = new PhoneBookService();
-        public PhoneBooksController(PhonebookApiContext context)
+        private readonly IPhoneBookService _service;
+        public PhoneBooksController(IPhoneBookService service)
         {
-            _context = context;
-
+         
+            _service = service;
         }
 
         // GET: api/PhoneBooks1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PhoneBook>>> GetPhoneBook()
+        public async Task<ActionResult<IEnumerable<PhoneBook>>> GetAllPhoneBooks()
         {
-            return await _context.PhoneBooks.ToListAsync();
+
+            return Ok(await _service.GetAllPhoneBooks());
         }
 
         // GET: api/PhoneBooks1/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PhoneBook>> GetPhoneBook(long id)
         {
-            var phoneBook = await _context.PhoneBooks.FindAsync(id);
+            var phoneBook = await _service.GetPhoneBook(id);
 
             if (phoneBook == null)
             {
@@ -43,67 +44,15 @@ namespace PhonebookApi.Controllers
             return phoneBook;
         }
 
-        // PUT: api/PhoneBooks1/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPhoneBook(long id, PhoneBook phoneBook)
-        {
-            if (id != phoneBook.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(phoneBook).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PhoneBookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/PhoneBooks1
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<PhoneBook>> PostPhoneBook(PhoneBook phoneBook)
         {
-            _context.PhoneBooks.Add(phoneBook);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPhoneBook), new { id = phoneBook.Id }, phoneBook);
+            var result = await _service.AddPhoneBook(phoneBook);
+            return CreatedAtAction(nameof(GetPhoneBook), new { id = phoneBook.Id }, result);
         }
 
-        // DELETE: api/PhoneBooks1/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePhoneBook(long id)
-        {
-            var phoneBook = await _context.PhoneBooks.FindAsync(id);
-            if (phoneBook == null)
-            {
-                return NotFound();
-            }
-
-            _context.PhoneBooks.Remove(phoneBook);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PhoneBookExists(long id)
-        {
-            return _context.PhoneBooks.Any(e => e.Id == id);
-        }
     }
 }

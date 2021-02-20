@@ -29,11 +29,11 @@ namespace PhonebookApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt =>
-                                              opt.UseSqlServer("TodoList"));
-            //services.AddDbContext<PhonebookApiContext>(opt =>
-            //opt.UseInMemoryDatabase("PhonebookApiDatabase"));
-            services.AddSingleton <IPhoneBookService, PhoneBookService>();
+            //services.AddDbContext<TodoContext>(opt =>
+                                              //opt.UseSqlServer("TodoList"));
+            services.AddDbContext<PhonebookApiContext>(opt =>
+            opt.UseInMemoryDatabase("PhonebookApiDatabase"));
+            services.AddScoped<IPhoneBookService, PhoneBookService>();
 
 
             services.AddControllers();
