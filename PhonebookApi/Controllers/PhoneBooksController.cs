@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PhonebookApi.Models;
 using PhonebookApi.Services;
 
@@ -14,12 +15,14 @@ namespace PhonebookApi.Controllers
     [ApiController]
     public class PhoneBooksController : ControllerBase
     {
-        private readonly PhonebookApiContext _context;
+        //private readonly PhonebookApiContext _context;
         private readonly IPhoneBookService _service;
-        public PhoneBooksController(IPhoneBookService service)
+        private readonly ILogger<PhoneBooksController> _logger;
+        public PhoneBooksController(IPhoneBookService service, ILogger<PhoneBooksController> logger)
         {
          
             _service = service;
+            _logger = logger;
         }
 
         // GET: api/PhoneBooks1

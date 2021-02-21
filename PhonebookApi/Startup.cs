@@ -31,8 +31,8 @@ namespace PhonebookApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PhonebookApiContext>(item => item.UseSqlServer(Configuration.GetConnectionString("PhonebookApiContextConnection")));
-            services.AddDbContext<CustomerContext>(item => item.UseSqlServer(Configuration.GetConnectionString("CustomerContext")));
             services.AddScoped<IPhoneBookService, PhoneBookService>();
+            services.AddScoped<IEntriesService, EntriesService>();
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "MyPolicy",

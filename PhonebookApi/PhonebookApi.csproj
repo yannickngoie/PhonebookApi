@@ -7,8 +7,14 @@
   <ItemGroup>
     <Compile Remove="Controllers\Entries1Controller.cs" />
     <Compile Remove="Controllers\PhoneBooks1Controller.cs" />
+    <Compile Remove="Controllers\TodoItemsController.cs" />
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Models\Customer.cs" />
+    <Compile Remove="Models\CustomerContext.cs" />
     <Compile Remove="Models\EntryContext.cs" />
     <Compile Remove="Models\PhonebookContext.cs" />
+    <Compile Remove="Models\TodoContext.cs" />
+    <Compile Remove="Models\TodoItem.cs" />
   </ItemGroup>
 
   <ItemGroup>

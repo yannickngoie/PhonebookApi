@@ -12,9 +12,8 @@ namespace PhonebookApi.Models
             : base(options)
         {
         }
-
-        public DbSet<PhoneBook> PhoneBooks { get; set; }
-        public DbSet<Entry> Entries { get; set; }
+        public virtual DbSet<PhoneBook> PhoneBooks { get; set; }
+        public virtual DbSet<Entry> Entries { get; set; }
 
     }
 }

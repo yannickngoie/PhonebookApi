@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PhonebookApi.Models;
+using PhonebookApi.Services;
 
 namespace PhonebookApi.Controllers
 {
@@ -14,17 +16,21 @@ namespace PhonebookApi.Controllers
     public class EntriesController : ControllerBase
     {
         private readonly PhonebookApiContext _context;
-
-        public EntriesController(PhonebookApiContext context)
+        private readonly IEntriesService _service;
+        private readonly ILogger<EntriesController> _logger;
+        public EntriesController(IEntriesService service, ILogger<EntriesController> logger)
         {
-            _context = context;
+
+            _service = service;
+            _logger = logger;
         }
+
 
         // GET: api/Entries1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Entry>>> GetAllEntries()
+        public async Task<ActionResult<IEnumerable<Entry>>> GetAllPhonebookEntries()
         {
-            return await _context.Entries.ToListAsync();
+           return Ok(await _service.GetAllPhonebookEntries());
         }
 
         // GET: api/Entries1/5
@@ -45,10 +51,8 @@ namespace PhonebookApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Entry>> PostEntry(Entry entry)
         {
-            _context.Entries.Add(entry);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetEntry), new { id = entry.Id }, entry);
+            var result = await _service.AddPhonebookEntries(entry);
+            return CreatedAtAction(nameof(GetEntry), new { id = entry.Id }, result);
         }
 
         private bool EntryExists(long id)

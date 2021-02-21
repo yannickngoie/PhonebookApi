@@ -10,8 +10,12 @@ namespace PhonebookApi.Models
     [Table(name: "PhoneBook", Schema = "dbo")]
     public class PhoneBook
     {
+
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid? PhonebookReference { get; set; }     
         [MaxLength(length: 100)]
         public string Name { get; set; }
         [MaxLength(length: 100)]

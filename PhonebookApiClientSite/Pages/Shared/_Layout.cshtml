@@ -1,4 +1,5 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -37,17 +38,22 @@
 
                 <div class="phone--book-middle">
                     <div class="phone-book-middle-newentry">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <input type="text" id="pb-newentry-name" placeholder="Enter name">
+                        <form  method ="post" id ="entry-form" >
+                            <div class="row">
+
+                                <div class="col-md-4">
+                                    <input type="text" id="pb-newentry-name" placeholder="Enter name" name="name" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="pb-newentry-phone" placeholder="XXXXXXXXXX" name="phone" required pattern="^[0-9]{10}$">
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="submit" id="pb-newentry-btn" onclick="addData()" value="Add To contacts">
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <input type="text" id="pb-newentry-phone" placeholder="000-0000-0000">
-                            </div>
-                            <div class="col-md-4">
-                                <button id="pb-newentry-btn" onclick="addData()">Add To contacts</button>
-                            </div>
-                        </div>
+                        </form>
+
+
                     </div>
                 </div>
 
@@ -60,7 +66,6 @@
                             <th>Contact Phone Number</th>
                             </thead>
                             <tbody>
-                                
                             </tbody>
                         </table>
                     </div>
@@ -103,28 +108,29 @@
         border: 1px solid #000;
         outline: none;
     }
-    button{
-        color: #fff;
-        text-decoration: none;
-        text-transform: uppercase;
-        padding: 8px 15px;
-        background: #001f3f;
-        text-align: center;
-        transition: 0.5s;
-        font-weight: 700;
-        border: none;
-        cursor: pointer;
-        outline: none;
-    }
-    button:focus{
-        outline: none;
-    }
-    button:hover {
-        color: #001f3f;
-        background: #fff;
-        transform: 1.5;
-        box-shadow: 0 0 0 2px #001f3f;
-    }
+
+        button, input[type="submit"] {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 8px 15px;
+            background: #001f3f;
+            text-align: center;
+            transition: 0.5s;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            outline: none;
+        }
+            button:focus, input[type="submit"]:focus {
+                outline: none;
+            }
+            button:hover, input[type="submit"]:hover {
+                color: #001f3f;
+                background: #fff;
+                transform: 1.5;
+                box-shadow: 0 0 0 2px #001f3f;
+            }
     .phone--book-middle {
         padding: 30px;
         display: none;
@@ -151,7 +157,12 @@
 
     <script>
 
-        $(window).ready(function () {
+        $(document).ready(function () {
+          
+                $('#entry-form').on('submit', function (e) {
+                    reloadData();
+                });
+
             $('#pb-add').on('click', function () {
                 $(this).hide();
                 $('#pb-cancel').fadeIn(2);
@@ -162,89 +173,93 @@
                 $('#pb-add').fadeIn(2);
                 $('.phone--book-middle').fadeOut(1000);
             });
+             
 
+            $.ajax({
+                url: 'https://localhost:44364/api/Entries',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var row = $('<tr><td>' + data[i].id + '</td><td>' + data[i].name + '</td><td>' + data[i].phoneNumber + '</td></tr>');
+                        $('#table').append(row);
+
+                    }
+                    console.log(data);
+
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Error: ' + textStatus + ' - ' + errorThrown);
+                }
+            });
 
         })
 
-        $.ajax({
-            url: 'https://localhost:44364/api/PhoneBooks',
-            dataType: 'json',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    var row = $('<tr><td>' + data[i].id + '</td><td>' + data[i].name + '</td><td>' + data[i].entries + '</td></tr>');
-                    $('#table').append(row);
 
+        function reloadData()
+        {
+            alert('New contact added !!!!!!');
+            $.ajax({
+                url: 'https://localhost:44364/api/Entries',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var row = $('<tr><td>' + data[i].id + '</td><td>' + data[i].name + '</td><td>' + data[i].phoneNumber + '</td></tr>');
+                        $('#table').append(row);
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Error: ' + textStatus + ' - ' + errorThrown);
                 }
-                console.log(data);
+            });
 
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert('Error: ' + textStatus + ' - ' + errorThrown);
-            }
-        });
-
+        }
         //search data
         $('#pb-search').on('keyup', function () {
             window.search_query = $(this).val();
-            fetch('https://localhost:44364/api/PhoneBooks')
+            fetch('https://localhost:44364/api/Entries')
                 .then(response => response.text())
                 .then(data => {
                     var content = JSON.parse(data);
-                    // content.push({
-                    //     'id': content.length+1,
-                    //     'contact_name': 'Rod',
-                    //     'phone': '1234567890'
-                    // });
-
 
                     var filteredNames = content.filter(function (el) {
-                        // console.log(el);
-                        // console.log(search_query);
-                        //return el.contact.search(/`${search_query}`/i)
+                      
 
                         return el.name.toLowerCase().indexOf(search_query.toLowerCase()) !== -1;
 
 
-
-
                     });
-                    console.log(filteredNames);
 
                     $('#table tbody').html('');
                     for (var i = 0; i < filteredNames.length; i++) {
-                        var row = $('<tr><td>' + filteredNames[i].id + '</td><td>' + filteredNames[i].name + '</td><td>' + filteredNames[i].entries + '</td></tr>');
+                        var row = $('<tr><td>' + filteredNames[i].id + '</td><td>' + filteredNames[i].name + '</td><td>' + filteredNames[i].phoneNumber + '</td></tr>');
                         $('#table').append(row);
 
                     }
                 });
-
-
         })
-
-
-        function Reload() {
-            Alert('Reload');
-        } 
 
         function addData() {
             var c_details = {
                 name: $('#pb-newentry-name').val(),
-                phone: $('#pb-newentry-phone').val(),
+                phonenumber: $('#pb-newentry-phone').val(),
             }
-            alert('Yes')
+          
             $.ajax({
-                url: 'https://localhost:44364/api/PhoneBooks',
+                url: 'https://localhost:44364/api/Entries',
                 type: 'post',
                 dataType: 'json',
                 contentType: 'application/json',
                 sucess: function (data) {
-                    console.log(data);
+                    console.log(data)
+
                 },
                 data: JSON.stringify(c_details)
             })
-
-            Reload();
+           
+          
+      
         } 
     </script>
 </body>
