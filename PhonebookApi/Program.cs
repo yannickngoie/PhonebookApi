@@ -27,7 +27,7 @@ namespace PhonebookApi
                 {
                     var context = services.GetRequiredService<PhonebookApiContext>();
                     context.Database.EnsureCreated();
-                    // DbInitializer.Initialize(context);
+                    //DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
