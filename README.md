@@ -12,6 +12,7 @@ Please read this: https://www.entityframeworktutorial.net/code-first/code-based-
 
 Please see the app screenshot below 
 ![phonebook](https://user-images.githubusercontent.com/6158306/108712610-b2416c00-751f-11eb-81f8-6eb7b3e293e7.JPG)
+![addContact](https://user-images.githubusercontent.com/6158306/108712988-44e20b00-7520-11eb-8c7f-6f49ca2c924e.JPG)
 ![ContactDetails](https://user-images.githubusercontent.com/6158306/108712813-00566f80-7520-11eb-8476-48f1c7c734ca.JPG)
 
 
