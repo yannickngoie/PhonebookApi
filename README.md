@@ -10,3 +10,7 @@ Kindly use EntityFramework Code First Migrations to create and update the databa
 
 Please read this: https://www.entityframeworktutorial.net/code-first/code-based-migration-in-code-first.aspx
 
+Please see the app screenshot below 
+![phonebook](https://user-images.githubusercontent.com/6158306/108712610-b2416c00-751f-11eb-81f8-6eb7b3e293e7.JPG)
+
+
