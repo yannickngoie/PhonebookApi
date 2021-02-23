@@ -3,6 +3,7 @@
 This solution consist of 2 projects in .NET CORE
 1. WebAPI
 2. Client Application: ASP.NET Web App with Razor Pages(Bootstrap, Javascript, JQuery)
+
 3.The CSS, JS all on CDN files.
 
 The WebAPI uses Entity Framework as the ORM.
